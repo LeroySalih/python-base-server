@@ -1,3 +1,6 @@
+image:
+  file: .gitpod.dockerfile
+
 tasks:
   - init: npm install
-    command: 'echo "TODO: Replace with command to start project"'
+    command: 'nodemon server.js'

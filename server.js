@@ -19,11 +19,12 @@ function createQuery (connection, sql, params) {
 
 
 app.get('/', (req, res) => {
+    const devUrl = "mysql://pnwsugsir2123vxs:fv7zby06obq50zpo@durvbryvdw2sjcm5.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/jf2u6xfv1edsbwh5"
     console.log("DB URL Found")
     console.log("************")
-    console.log(process.env.JAWSDB_URL);
+    console.log(process.env.JAWSDB_URL || devUrl);
     console.log("************")
-    var connection = mysql.createConnection(process.env.JAWSDB_URL);
+    var connection = mysql.createConnection(process.env.JAWSDB_URL|| devUrl );
     connection.connect();
 
     connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
