@@ -3,6 +3,9 @@ var express = require('express')
   , util = require('util')
   , MicrosoftStrategy = require('passport-microsoft').Strategy;
 
+require ("isomorphic-fetch");
+var MicrosoftGraph = require("@microsoft/microsoft-graph-client");
+
 var MICROSOFT_GRAPH_CLIENT_ID = "56ac7b49-77e4-4eb2-961a-040358a808d0"
 var MICROSOFT_GRAPH_CLIENT_SECRET = "Lqlb-CcGw6._OsLgx97c6WI4mN4~7oFsR1";
 
@@ -33,10 +36,16 @@ passport.deserializeUser(function (obj, done) {
 passport.use(new MicrosoftStrategy({
   clientID: MICROSOFT_GRAPH_CLIENT_ID,
   clientSecret: MICROSOFT_GRAPH_CLIENT_SECRET,
-  callbackURL: "https://3000-bf63b3d4-0a6e-4a53-bf9d-1dd2f15a119d.ws-eu01.gitpod.io/auth/microsoft/callback",
-  scope: ['user.read']
+  callbackURL: "https://3000-ab155182-05d4-4bf5-b47e-2b757b153877.ws-eu01.gitpod.io/auth/microsoft/callback",
+  scope: ['user.read', 'EduRoster.Read']
 },
   function (accessToken, refreshToken, profile, done) {
+
+    //console.log("Access token received:", accessToken);
+    profile.accessToken = accessToken
+    profile.refreshToken = refreshToken
+    //console.log("Profile:", profile);
+
     // asynchronous verification, for effect...
     process.nextTick(function () {
 
@@ -87,11 +96,33 @@ var app = express();
 
 
 app.get('/', function (req, res) {
-  res.render('main', { user: req.user });
+    console.log(req.user)
+    res.render('main', { user: req.user });
 });
 
-app.get('/account', ensureAuthenticated, function (req, res) {
-  res.render('account', { user: req.user });
+app.get('/account', ensureAuthenticated, async function (req, res) {
+    console.log(req.user);
+    console.log(req.user.accessToken);
+
+    client = MicrosoftGraph.Client.init({
+        defaultVersion: "beta",
+        defaultLogging: true,
+        authProvider: (done) => {
+            done(null, req.user.accessToken);
+        }
+    });
+
+    client
+        .api("/education/me/classes")
+        .get()
+        .then((result) => {
+                console.log("Received: ********")
+                console.log(result)
+                console.log("Received: ********")
+                res.render('account', {user: req.user})
+        
+            })
+        .catch((err) => console.error(err))
 });
 
 app.get('/login', function (req, res) {
