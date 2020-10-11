@@ -1,2 +1,10 @@
 <h1>Account for {{user.displayName}}</h1>
 <h2>{{email}}</h2>
+
+{{#each classes}}
+<div>
+    <a href="/assignments/{{this.id}}">
+    {{this.displayName}}, {{this.description}}
+    </a>
+    </div>
+{{/each}}

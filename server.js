@@ -1,11 +1,17 @@
 var express = require('express')
   , passport = require('passport')
   , util = require('util')
-  , MicrosoftStrategy = require('passport-microsoft').Strategy;
+  , MicrosoftStrategy = require('passport-microsoft').Strategy
+
+
+const logger = require("morgan");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session");
 
 require ("isomorphic-fetch");
-var MicrosoftGraph = require("@microsoft/microsoft-graph-client");
 
+var MicrosoftGraph = require("@microsoft/microsoft-graph-client");
 var MICROSOFT_GRAPH_CLIENT_ID = "56ac7b49-77e4-4eb2-961a-040358a808d0"
 var MICROSOFT_GRAPH_CLIENT_SECRET = "Lqlb-CcGw6._OsLgx97c6WI4mN4~7oFsR1";
 
@@ -61,38 +67,36 @@ passport.use(new MicrosoftStrategy({
 var app = express();
 
 // configure Express
-
-  app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/views');
   
-    //instead of app.set('view engine', 'handlebars'); 
-    app.set('view engine', 'hbs');  
+//instead of app.set('view engine', 'handlebars'); 
+app.set('view engine', 'hbs');  
 
-    //instead of app.engine('handlebars', handlebars({
-    app.engine('hbs', handlebars({
-        layoutsDir: __dirname + '/views/layouts',
+//instead of app.engine('handlebars', handlebars({
+app.engine('hbs', handlebars({
+    layoutsDir: __dirname + '/views/layouts',
 
-        //new configuration parameter
-        extname: 'hbs',
-        defaultLayout:"index"
-    }));
+    //new configuration parameter
+    extname: 'hbs',
+    defaultLayout:"index"
+}));
   
-    const logger = require("morgan");
-    const cookieParser = require("cookie-parser");
-    const bodyParser = require("body-parser");
-    const expressSession = require("express-session");
-
-    app.use(logger());
-    app.use(cookieParser());
-    app.use(bodyParser());
-    app.use(expressSession({ secret: 'keyboard cat' }));
-  // Initialize Passport!  Also use passport.session() middleware, to support
-  // persistent login sessions (recommended).
-    app.use(passport.initialize());
-    app.use(passport.session());
-    
-    app.use(express.static(__dirname + '/public'));
 
 
+app.use(logger('tiny'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(session({ secret: 'keyboard cat', resave: true,
+    saveUninitialized: true }));
+
+// Initialize Passport!  Also use passport.session() middleware, to support
+// persistent login sessions (recommended).
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(express.static(__dirname + '/public'));
+
+app.use('/api', require('./api'))
 
 
 app.get('/', function (req, res) {
@@ -100,6 +104,10 @@ app.get('/', function (req, res) {
     res.render('main', { user: req.user });
 });
 
+
+
+
+/*
 app.get('/account', ensureAuthenticated, async function (req, res) {
     console.log(req.user);
     console.log(req.user.accessToken);
@@ -119,16 +127,17 @@ app.get('/account', ensureAuthenticated, async function (req, res) {
                 console.log("Received: ********")
                 console.log(result)
                 console.log("Received: ********")
-                res.render('account', {user: req.user})
+                res.render('account', {user: req.user, classes: result.value})
         
             })
         .catch((err) => console.error(err))
 });
 
+/*
 app.get('/login', function (req, res) {
   res.render('login', { user: req.user });
 });
-
+*/
 // GET /auth/microsoft
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request. The first step in Microsoft Graph authentication will involve
@@ -157,7 +166,30 @@ app.get('/logout', function (req, res) {
   res.redirect('/');
 });
 
-app.listen(3000);
+
+const mysql = require('mysql');
+
+const dbConn = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: 'pwdpwd'
+});
+
+dbConn.connect(err => {
+
+    if (err) {
+        console.log(err)
+    }
+    console.log('DB Connected');
+
+    console.log('Listening')
+    app.listen(3000);
+
+});
+
+
+
 
 
 // Simple route middleware to ensure user is authenticated.
@@ -167,5 +199,5 @@ app.listen(3000);
 //   login page.
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect('/login')
+  res.redirect('/')
 }

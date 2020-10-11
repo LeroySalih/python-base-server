@@ -1,24 +1,63 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Passport-Microsoft Example</title>
+		<title>Code Pods</title>
+        <style>
+
+            #navBar {
+                background-color: #585ea2;
+                height: 50px;
+                display: flex;
+                padding-left:20px;
+            }
+
+            #navBar h1 {
+                color: white
+            }
+
+            #pageLayout {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+
+            }
+
+            #content {
+                flex:1;
+            }
+
+            #footer {
+                background-color: silver;
+                height: 50px;
+            }
+        </style>
 	</head>
 	<body>
-		{{#if user }}
+    <div id="pageLayout">
+        <div id="navBar">
+            <h1>Code Pods</h1>
+        </div>
+        <div id="content">
+
+            {{#if user }}
             <h2>Hello, {{ user.displayName }}.</h2>
-			<p>
-			<a href="/">Home</a> | 
-			<a href="/account">Account</a> | 
-			<a href="/logout">Log Out</a>
-			</p>
-			
+            <div><a href="/logout">Log Out</a></div>
 		 {{else }}
-			<h2>Welcome! Please log in.</h2>
-			<p>
-			<a href="/">Home</a> | 
-			<a href="/login">Log In</a>
-			</p>
+			<a href="/auth/microsoft">
+                <img src="/images/ms-symbollockup_signin_dark.svg" alt="Login with Microsoft">
+                </img>
+            </a>
 		{{/if}}
-		Made with ♥ by Leroy Salih 
+
+        </div>
+        <div id="footer">
+            Made with ♥ by Leroy Salih
+        </div>
+    </div>
+            
+        
+
+		
+		 
 	</body>
 </html>

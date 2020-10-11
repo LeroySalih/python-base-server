@@ -19,40 +19,50 @@ const main = async () => {
             if (err) throw err;
             console.log('Connected!');
 
-            dbConn.query("DROP DATABASE IF EXISTS mydb", (err, result) => {
+            dbConn.query("DROP DATABASE IF EXISTS codepod", (err, result) => {
                 if (err) throw err;
                 console.log("Database dropped");
             });
 
-            dbConn.query("CREATE DATABASE mydb ", 
+            dbConn.query("CREATE DATABASE codepod ", 
                 (err, result) => {
                 if (err) throw err;
                 console.log("Database created");
             });
 
-            dbConn.query(`USE mydb;`, (err, result) => {
+            dbConn.query(`USE codepod;`, (err, result) => {
                 if (err) throw err;
-                console.log("USING mydb");
+                console.log("USING codepod");
             })
 
-            dbConn.query(`CREATE TABLE registration (
+            dbConn.query(`CREATE TABLE test_status (
                 ID          int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                name        varchar(100)   
+                email       varchar(100),
+                podId       varchar(100),
+                result      text,
+                created     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`, (err, result) => {
                 if (err) throw err;
-                console.log("Creating Table: registration");
+                console.log("Creating Table: test_status");
             })
 
-             dbConn.query(`INSERT INTO registration (name)
-                            VALUES('testUser') 
+             dbConn.query(`INSERT INTO test_status (email, podId, result)
+                            VALUES('testUser', '1', '[1, 1, 0]') 
             `, (err, result) => {
                 if (err) throw err;
-                console.log("Inserting test user: testUser");
+                console.log("Inserting test result: testUser");
             })
 
-            dbConn.query(`SELECT * FROM registration`, (err, result) => {
+            dbConn.query(`SELECT * FROM test_status`, (err, result) => {
                 if (err) throw err;
                 console.log(result);
+            })
+
+            dbConn.query(`DELETE FROM test_status`);
+
+            dbConn.query(`SELECT COUNT(*) as R_COUNT FROM test_status`, (err, result) => {
+                if (err) throw err;
+                console.log(`Found ${result[0]['R_COUNT']} rows in table`);
             })
 
             dbConn.end();
