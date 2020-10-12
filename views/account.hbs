@@ -2,9 +2,13 @@
 <h2>{{email}}</h2>
 
 {{#each classes}}
-<div>
+    <div>
     <a href="/assignments/{{this.id}}">
     {{this.displayName}}, {{this.description}}
     </a>
     </div>
+{{/each}}
+
+{{#each result}}
+    <div>Result Found</div>
 {{/each}}

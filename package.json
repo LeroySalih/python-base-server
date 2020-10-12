@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postbuild" : "node db_setup.js",
+    "postbuild" : "node db_setup.js && node db_data.js",
     "heroku-postbuild" : "node db_setup.js && node db_data.js",
     "watch": "node ./node_modules/nodemon/bin/nodemon.js server.js"
   },

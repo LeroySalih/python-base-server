@@ -56,6 +56,9 @@ passport.use(new MicrosoftStrategy({
       return db.getUser(profile._json.mail)
         .then((userProfile) => {
             
+            if (!userProfile) {
+                return done(new Error("No User Found"), null)
+            }
             userProfile['displayName'] = profile._json['displayName']
             console.log('UserProfile: ', userProfile)
             return done(null, userProfile)

@@ -40,6 +40,14 @@ async function getPods () {
 
 module.exports.getPods = getPods;
 
+async function getResults () {
+    console.log('getResults::')
+    const sql = "SELECT * FROM test_status"
+    return doQuery(sql, []);
+}
+
+module.exports.getResults = getResults;
+
 
 exports.addTestResult = (email, podId, testResults) => {
     var sql = `INSERT INTO test_status(email, podId, result) VALUES (?, ?, ?)`

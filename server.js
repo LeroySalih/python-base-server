@@ -39,11 +39,25 @@ app.engine('hbs', handlebars({
     extname: 'hbs',
     defaultLayout:"index",
     helpers : {
+        displayResult: displayResult,
         log : (obj) => console.log('Debug:', obj),
         podUrl : (pod, user) => `<a href="https://gitpod.io/#APP_EMAIL=${user.email},POD_ID=${pod.id}/${pod.baseUrl}">${pod.title}</a>`
     }
 }));
   
+function displayLight(result) {
+    return (result.status == 'passed') ? '<span style="color: green">' + result.status + '</span>' : '<span style="color: red">' + result.status + '</span>'
+}
+function displayResult(result) {
+    const tests = eval(result.result)
+    const test_results = tests.map((item) => displayLight(item))
+    return `<div>
+    <div>${result.ID} - ${tests.length} tests </div>
+        <div>
+            ${test_results}
+        </div>
+    </div>`
+}
 
 
 app.use(logger('tiny'));
@@ -69,7 +83,13 @@ app.get('/', async function (req, res) {
     // getpods
     const pods = await db.getPods()
     console.log('Pods', pods )
-    res.render('main', { user: req.user, pods: pods });
+
+    const results = await db.getResults()
+    console.log('*****************')
+    console.log('Results', results)
+    console.log('*****************')
+    
+    res.render('main', { user: req.user, pods: pods, results: results });
 });
 
 
