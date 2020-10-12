@@ -14,20 +14,23 @@ const main = async () => {
             if (err) throw err;
             console.log('Connected!');
 
-            dbConn.query("DROP DATABASE IF EXISTS codepod", (err, result) => {
+            if (process.env.DEBUG == 1){
+                dbConn.query("DROP DATABASE IF EXISTS jf2u6xfv1edsbwh5", (err, result) => {
                 if (err) throw err;
                 console.log("Database dropped");
-            });
+                });
 
-            dbConn.query("CREATE DATABASE codepod ", 
-                (err, result) => {
-                if (err) throw err;
-                console.log("Database created");
-            });
+                dbConn.query("CREATE DATABASE jf2u6xfv1edsbwh5 ", 
+                    (err, result) => {
+                    if (err) throw err;
+                    console.log("Database created");
+                });
+            }
+            
 
-            dbConn.query(`USE codepod;`, (err, result) => {
+            dbConn.query(`USE jf2u6xfv1edsbwh5;`, (err, result) => {
                 if (err) throw err;
-                console.log("USING codepod");
+                console.log("USING jf2u6xfv1edsbwh5");
             })
 
             dbConn.query(`CREATE TABLE test_status (
