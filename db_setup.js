@@ -33,6 +33,12 @@ const main = async () => {
                 console.log("USING jf2u6xfv1edsbwh5");
             })
 
+            dbConn.query(`DROP TABLE IF EXISTS test_status;`, (err, result) => {
+                if (err){
+                    throw err;
+                }
+                console.log("Dropping Table test_status")
+            })
             dbConn.query(`CREATE TABLE test_status (
                 ID          int PRIMARY KEY NOT NULL AUTO_INCREMENT,
                 email       varchar(100),
@@ -63,6 +69,13 @@ const main = async () => {
                 console.log(`Found ${result[0]['R_COUNT']} rows in table`);
             });
 
+            dbConn.query(`DROP TABLE IF EXISTS user_profile;`, (err, result) => {
+                if (err){
+                    throw err;
+                }
+                console.log("Dropping Table user_profile")
+            })
+
             dbConn.query(`CREATE TABLE user_profile (
                 email           varchar(100) PRIMARY KEY NOT NULL,
                 isTeacher       int DEFAULT 0, 
@@ -92,6 +105,12 @@ const main = async () => {
             });
 
 
+            dbConn.query(`DROP TABLE IF EXISTS pods;`, (err, result) => {
+                if (err){
+                    throw err;
+                }
+                console.log("Dropping Table pods")
+            })
             dbConn.query(`CREATE TABLE pods (
                 id              int PRIMARY KEY NOT NULL AUTO_INCREMENT,
                 title           varchar(100),
