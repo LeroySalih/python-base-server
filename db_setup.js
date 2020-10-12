@@ -6,12 +6,8 @@ const main = async () => {
         
         const mysql = require('mysql');
 
-        const dbConn = mysql.createConnection({
-            host: process.env.MYSQL_HOST,
-            port: process.env.MYSQL_PORT,
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD
-        });
+        console.log('Connecting using:', process.env.DB_URL)
+        const dbConn = mysql.createConnection(process.env.DB_URL);
 
         dbConn.connect(err => {
 
