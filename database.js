@@ -38,7 +38,7 @@ exports.getUser = (email) => {
                 .then((result) => result.length == 1 ? result[0] : null);
 }
 
-/*
+
 async function getPods () {
     console.log('getPods::')
     const sql = "SELECT * FROM pods"
@@ -46,7 +46,7 @@ async function getPods () {
 }
 
 module.exports.getPods = getPods;
-*/
+
 
 exports.addTestResult = (email, podId, testResults) => {
     var sql = `INSERT INTO test_status(email, podId, result) VALUES (?, ?, ?)`

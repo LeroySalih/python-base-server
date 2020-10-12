@@ -37,7 +37,11 @@ app.engine('hbs', handlebars({
 
     //new configuration parameter
     extname: 'hbs',
-    defaultLayout:"index"
+    defaultLayout:"index",
+    helpers : {
+        log : (obj) => console.log('Debug:', obj),
+        podUrl : (pod, user) => `<a href="https://gitpod.io/#email=${user.email},podId=${pod.id}/${pod.baseUrl}">${pod.title}</a>`
+    }
 }));
   
 
@@ -60,12 +64,12 @@ app.use(express.static(__dirname + '/public'));
 app.use('/api', require('./api'))
 app.use('/auth', require('./auth'))
 
-app.get('/',  function (req, res) {
+app.get('/', async function (req, res) {
     console.log(req.user)
     // getpods
-    // const pods = await db.getPods()
-    // console.log('Pods', pods )
-    res.render('main', { user: req.user });
+    const pods = await db.getPods()
+    console.log('Pods', pods )
+    res.render('main', { user: req.user, pods: pods });
 });
 
 

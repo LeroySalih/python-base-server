@@ -36,19 +36,31 @@
     <div id="pageLayout">
         <div id="navBar">
             <h1>Code Pods</h1>
+            
         </div>
         <div id="content">
 
             {{#if user }}
             <h2>Hello, {{ user.displayName }}.</h2>
-            <div><a href="/logout">Log Out</a></div>
+            <h4>{{user.email}}</h4>
+            
+            {{#each pods}}
+            <div>
+                {{{log this}}}
+                {{{podUrl this ../user }}}
+                
+            </div>
+                
+            {{/each}}
+
+            <div><a href="/auth/logout">Log Out</a></div>
 		 {{else }}
 			<a href="/auth/microsoft">
                 <img src="/images/ms-symbollockup_signin_dark.svg" alt="Login with Microsoft">
                 </img>
             </a>
-		{{/if}}
-
+		    {{/if}}
+            
         </div>
         <div id="footer">
             Made with ♥ by Leroy Salih
