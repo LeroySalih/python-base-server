@@ -1,13 +1,6 @@
 var mysql = require('mysql')
 
-var pool = mysql.createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    connectionLimit: 10, 
-    supportBigNumbers: true
-})
+var pool = mysql.createPool(process.env.DB_URL)
 
 const doQuery = (sql, params) => {
     return new Promise((res, rej) => {

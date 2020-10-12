@@ -34,7 +34,7 @@ if (process.env.DEBUG == 1){
 passport.use(new MicrosoftStrategy({
   clientID: process.env.MICROSOFT_APP_ID,
   clientSecret: process.env.MICROSOFT_APP_SECRET,
-  callbackURL: "https://3000-ab155182-05d4-4bf5-b47e-2b757b153877.ws-eu01.gitpod.io/auth/microsoft/callback",
+  callbackURL: process.env.MICROSOFT_APP_CALLBACK_URL,
   scope: ['user.read', 'EduRoster.Read']
 },
   function (accessToken, refreshToken, profile, done) {

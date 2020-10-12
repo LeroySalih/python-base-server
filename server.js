@@ -40,7 +40,7 @@ app.engine('hbs', handlebars({
     defaultLayout:"index",
     helpers : {
         log : (obj) => console.log('Debug:', obj),
-        podUrl : (pod, user) => `<a href="https://gitpod.io/#email=${user.email},podId=${pod.id}/${pod.baseUrl}">${pod.title}</a>`
+        podUrl : (pod, user) => `<a href="https://gitpod.io/#APP_EMAIL=${user.email},POD_ID=${pod.id}/${pod.baseUrl}">${pod.title}</a>`
     }
 }));
   
