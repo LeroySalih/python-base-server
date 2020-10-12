@@ -1,4 +1,5 @@
 const router = require("express").Router()
+var db = require("../database.js")
 
 router.get('/', (req, res) => {
     // Extract Parameters
@@ -11,8 +12,10 @@ router.post('/test-result', (req, res) => {
     const podId = req.body.podId || null
 
     // write to db.
-
-    res.json({msg: 'OK', email, podId})
+    db.addTestResult(email, podId, "")
+        .then((result) => res.json({msg: 'OK', email, podId}))
+        .catch((error) => consol.log(error.message))
+    
 })
 
 module.exports = router;
