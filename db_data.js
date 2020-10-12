@@ -18,9 +18,9 @@ const main = async () => {
             if (err) throw err;
             console.log('Connected!');
 
-            dbConn.query(`USE codepod;`, (err, result) => {
+            dbConn.query(`USE jf2u6xfv1edsbwh5;`, (err, result) => {
                 if (err) throw err;
-                console.log("USING codepod");
+                console.log("USING jf2u6xfv1edsbwh5");
             })
 
             dbConn.query(`INSERT INTO user_profile (email, isTeacher)
