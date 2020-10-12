@@ -117,8 +117,8 @@ app.get('/login', function (req, res) {
 
 console.log('App Name: ', process.env.APP_NAME)
 
-console.log('Listening on ', process.env.APP_PORT)
-app.listen(process.env.APP_PORT);
+console.log('Listening on ', process.env.PORT)
+app.listen(process.env.PORT);
  
 
 
