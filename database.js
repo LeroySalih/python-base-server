@@ -49,7 +49,7 @@ async function getResults () {
 module.exports.getResults = getResults;
 
 
-exports.addTestResult = (email, podId, testResults) => {
+exports.addTestResult = (email, podId, testResults, filePath) => {
     var sql = `INSERT INTO test_status(email, podId, result) VALUES (?, ?, ?)`
     return doQuery (sql, [email, podId, testResults])
 }

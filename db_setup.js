@@ -44,6 +44,7 @@ const main = async () => {
                 email       varchar(100),
                 podId       varchar(100),
                 result      text,
+                fileName    varchar(100),
                 created     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`, (err, result) => {
                 if (err) throw err;
